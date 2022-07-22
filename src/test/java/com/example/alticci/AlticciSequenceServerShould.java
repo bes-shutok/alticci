@@ -1,39 +1,40 @@
 package com.example.alticci;
 
-import com.example.alticci.controller.AlticciSequenceController;
+import com.example.alticci.service.AlticciSequenceServer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.example.alticci.controller.AlticciSequenceController.NEGATIVE_NUMBER;
-import static com.example.alticci.controller.AlticciSequenceController.NOT_SUPPORTED_NUMBER;
+import static com.example.alticci.service.AlticciSequenceServer.NEGATIVE_NUMBER;
+import static com.example.alticci.service.AlticciSequenceServer.NOT_SUPPORTED_NUMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SuppressWarnings("NewClassNamingConvention")
 @SpringBootTest
-class AlticciApplicationTests {
+class AlticciSequenceServerShould {
 
 	@Autowired
-	private AlticciSequenceController alticciSequenceController;
+	private AlticciSequenceServer alticciSequenceServer;
 
 	@ParameterizedTest
 	@ValueSource(ints = {-1, -100, Integer.MIN_VALUE })
-	void shouldFailForNegative(int n) {
+	void failForNegative(int n) {
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> alticciSequenceController.getAlticciNumber(n),
+				() -> alticciSequenceServer.getAlticciSequence(n),
 				NEGATIVE_NUMBER.formatted(n)
 		);
 	}
 
 	@ParameterizedTest
 	@ValueSource(ints = {26_000, Integer.MAX_VALUE })
-	void shouldFailForNotSupported(int n) {
+	void failForNotSupported(int n) {
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> alticciSequenceController.getAlticciNumber(n),
+				() -> alticciSequenceServer.getAlticciSequence(n),
 				NOT_SUPPORTED_NUMBER.formatted(n)
 		);
 	}
@@ -53,8 +54,8 @@ class AlticciApplicationTests {
 			10, 9
 			100, 888855064897
 			""")
-	void shouldReturnCorrectValue(int n, long alticciNumber) {
-		assertEquals(alticciNumber, alticciSequenceController.getAlticciNumber(n));
+	void returnCorrectValue(int n, long alticciNumber) {
+		assertEquals(alticciNumber, alticciSequenceServer.getAlticciSequence(n));
 	}
 
 }
