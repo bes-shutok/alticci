@@ -5,10 +5,10 @@
 This project uses Java 17 with toolchain.
 
 If Java 17 is the default one for the system, one can skip the toolchain configuration
-by setting field <activeByDefault> to `false` in `pom.xml:140`
+by setting field `<activeByDefault>` to `false` in `pom.xml:94`
 
-Otherwise, one needs to configure the toolchain in the 
-${user.home}/.m2/toolchains.xml file:
+Otherwise, one needs to configure the `jdkHome` path in the 
+`${user.home}/.m2/toolchains.xml` file:
 
 Below is an example of its contents:
 ```xml
