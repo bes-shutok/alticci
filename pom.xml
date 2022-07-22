@@ -134,7 +134,7 @@
 	<profiles>
 		<profile>
 			<!-- We need to put toolchains in a profile, because it's not needed on Docker image. A Docker image
-			 is already pre-configured with the right JDK version, so we disable this profile there.-->
+			 is already pre-configured with the right JDK version, so we could disable this profile there.-->
 			<id>UsingToolchains</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
