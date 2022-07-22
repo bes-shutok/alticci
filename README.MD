@@ -46,7 +46,10 @@ docker run -it --rm -p 8183:8080 example/alticci
 ```
 
 After docker image is built and running, you can run the tests with:
-`localhost:8183` in a browser.
+`http://localhost:8183/alticci` in a browser.
+
+to see Open Api documentation, run:
+`http://localhost:8183/swagger-ui/index.html`
 
 ### To stop and remove the docker container:
 type 'Ctrl' (or 'Command' for Macs) + 'C' in the terminal
