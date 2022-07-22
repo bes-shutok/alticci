@@ -1,13 +1,14 @@
 package com.example.alticci.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(AlticciSequenceController.PATH)
@@ -18,7 +19,7 @@ public class AlticciSequenceController {
      * In case if there will be a more complex requirement (e.g. concurrency)
      * another alternatives should be used (e.g. Guava's Suppliers#memoize)
      */
-    private static final HashMap<Integer,Long> memoization = new HashMap<>();
+    private static final Map<Integer, Long> memoization = new HashMap<>();
     static {
         memoization.put(0, 0L);
         memoization.put(1, 1L);
@@ -52,20 +53,37 @@ public class AlticciSequenceController {
      * calculations to speed up future calculations.
      */
     public static final String PATH = "/api/";
-    public static final String ILLIGAL_NUMBER = "n must be equal or greater than 0, got %d instead";
+    public static final String NEGATIVE_NUMBER = "n must be equal or greater than 0, got %d instead";
+    public static final String NOT_SUPPORTED_NUMBER = "n must be less than 25,000, got %d instead";
 
-    @Operation(summary = "Returns Alticci sequence for n", description = "Returns a value from the Alticci sequence." +
-            " Input n must be integer and cannot be less than 0")
+    @Operation(summary = "Returns Alticci sequence for index n", description = "Returns a value from the" +
+            " Alticci sequence. Alticci sequence index 'n' must be integer and cannot be less than 0")
+    @Parameter(name = "n", description = "Index of the Alticci sequence." +
+            " Cannot be less than 0 or more than 25,000")
     @GetMapping("/alticci/{n}")
     public long getAlticciNumber(@PathVariable int n) {
         if (n < 0) {
-            throw new IllegalArgumentException(ILLIGAL_NUMBER.formatted(n));
+            throw new IllegalArgumentException(NEGATIVE_NUMBER.formatted(n));
+        }
+        if (n > 25_000) {
+            throw new IllegalArgumentException(NOT_SUPPORTED_NUMBER.formatted(n));
         }
 
         return alticciNumber(n);
     }
 
+    /**
+     * It is not possible to use
+     * <pre>{@code memoization.computeIfAbsent(n, (n1) -> alticciNumber(n1 - 3) + alticciNumber(n1 - 2));}</pre>
+     * here, because according to the description of the function
+     * 'The mapping function should not modify this map during computation.'
+     */
     private static long alticciNumber(int n) {
-        return memoization.computeIfAbsent(n, (n1) -> alticciNumber(n1 - 3) + alticciNumber(n1 - 2));
+        if (memoization.containsKey(n)) {
+            return memoization.get(n);
+        }
+        long result = alticciNumber(n - 3) + alticciNumber(n - 2);
+        memoization.put(n, result);
+        return result;
     }
 }

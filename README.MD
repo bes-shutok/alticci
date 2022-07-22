@@ -28,10 +28,12 @@ Below is an example of its contents:
 ```
 
 ### Compiling the project locally
-This project uses Java 17 from maven folder ${user.home}/.m2/toolchains.xml
-
-Below is an example of its contents:
-```bash
+To compile the project locally, one needs to execute the following command:
+```shell
+mvn clean install
+```
+or this (to skip the tests):
+```shell
 mvn clean install -DskipTests
 ```
 
@@ -46,9 +48,12 @@ docker run -it --rm -p 8183:8080 example/alticci
 ```
 
 After docker image is built and running, you can run the tests with:
-`http://localhost:8183/alticci` in a browser.
+`http://localhost:8183/api/alticci/{n}` in a browser.
 
-to see Open Api documentation, run:
+to see Open Api documentation one could open the following url:
+`http://localhost:8183/v3/api-docs`
+
+There is also UI to browse the APi with the following url:
 `http://localhost:8183/swagger-ui/index.html`
 
 ### To stop and remove the docker container:
