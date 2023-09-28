@@ -1,7 +1,7 @@
 # Simple REST Service, returning a value from the Alticci sequence
 
 ## Instructions
-### Setting up correct Java version
+### Setting up correct Java version 
 This project uses Java 17 with toolchain.
 
 If Java 17 is the default one for the system, one can skip the toolchain configuration
